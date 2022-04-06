@@ -11,7 +11,7 @@ define('CURRENT_VERSION', '2.5.3');
 define('LOG_QUERIES', false);
 define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('MOTHERSHIP_URL', 'http://mothership.cumulusclips.org');
-date_default_timezone_set('America/New_York');
+date_default_timezone_set('Europe/Moscow');
 
 // Load App class and perform pre-init checks
 if (!class_exists('App')) include(DOC_ROOT . '/cc-core/lib/App.php');
