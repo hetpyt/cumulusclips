@@ -30,7 +30,7 @@ $this->setLayout('full');
     <?php else: ?>
         <!-- BEGIN VIDEO -->
         <div id="player">
-            <video class="video-js vjs-default-skin vjs-big-play-centered" data-setup='{ "controls": true, "autoplay": true, "preload": "auto" }' width="600" height="337" poster="<?=$config->thumbUrl?>/<?=$video->filename?>.jpg">
+            <video class="video-js vjs-default-skin vjs-big-play-centered" data-setup='{ "controls": true, "autoplay": true, "preload": "auto" }' width="640" height="360" poster="<?=$config->thumbUrl?>/<?=$video->filename?>.jpg">
                 <source src="<?=$config->h264Url?>/<?=$video->filename?>.mp4" type="video/mp4" />
                 <?php if ($webmEncodingEnabled): ?>
                     <source src="<?=$config->webmUrl?>/<?=$video->filename?>.webm" type="video/webm" />
