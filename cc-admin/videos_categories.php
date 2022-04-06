@@ -36,7 +36,11 @@ if (isset($_POST['submitted_add'])) {
             }
 
             $category = new Category();
-            $category->slug = Functions::createSlug(trim($_POST['cat_name']));
+            if (!empty($_POST['slug'])) {
+                $category->slug =  strtolower(preg_replace('/[^a-z0-9]+/i', '-', $_POST['slug'])); //trim($_POST['cat_name']);
+            } else {
+                $category->slug = Functions::createSlug(trim($_POST['cat_name']));
+            }
             $category->name = trim($_POST['cat_name']);
 
             if ($categoryMapper->getCategoryBySlug($category->slug)) {
@@ -156,6 +160,8 @@ include('header.php');
     <form action="<?=ADMIN?>/videos_categories.php" method="post" class="<?=(isset($errors['cat_name'])) ? 'has-error' : ''?>">
         <label class="control-label">Category Name:</label>
         <input type="text" class="form-control" name="cat_name" value="<?=(!empty($category->name))?$category->name:''?>"/>
+        <label class="control-label">Category Slug:</label>
+        <input type="text" class="form-control" name="slug" value="<?=(!empty($category->slug))?$category->slug:''?>"/>
         <input type="hidden" name="submitted_add" value="TRUE" />
         <input type="hidden" name="nonce" value="<?=$formNonce?>" />
         <input type="submit" class="button" value="Add Category" />
