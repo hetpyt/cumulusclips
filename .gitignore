@@ -1,10 +1,1 @@
-cc-content/uploads/files/*
-cc-content/uploads/avatars/*
-cc-content/uploads/h264/*
-cc-content/uploads/import/*
-cc-content/uploads/mobile/*
-cc-content/uploads/temp/*
-cc-content/uploads/theora/*
-cc-content/uploads/thumbs/*
-cc-content/uploads/webm/*
-cc-core/logs/*
+cc-core/logs/*.log
