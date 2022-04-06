@@ -27,8 +27,8 @@ HOMEPAGE
 
 #slideshow {
     position: relative;
-    width: 600px;
-    height: 287px;
+    width: 640px;
+    height: 360px;
     margin-bottom: 7px;
 }
 
@@ -41,13 +41,13 @@ HOMEPAGE
     top: 0;
     left: 0;
     display: none;
-    height: 287px;
+    height: 360px;
     background-color: #000;
 }
 
 .slide-text {
     height: 115px;
-    width: 600px;
+    width: 640px;
     bottom: 0;
     left: 0;
     position: absolute;
@@ -81,7 +81,7 @@ HOMEPAGE
 }
 
 #slideshow_nav {
-    width: 600px;
+    width: 640px;
     text-align: center;
 }
 
@@ -329,15 +329,15 @@ Watch Video
 }
 
 .watch h1 {
-    width: 600px;
+    width: 640px;
     float: left;
     padding-right: 330px;
 }
 
 #player {
     background-color: #000;
-    width: 600px;
-    height: 337px;
+    width: 640px;
+    height: 360px;
 }
 
 #player-gated {

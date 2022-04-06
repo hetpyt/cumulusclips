@@ -15,7 +15,7 @@ $this->addJs('jcycle.js');
     <!-- BEGIN FEATURED VIDEO SLIDES -->
     <?php foreach ($featured_videos as $featuredVideo): ?>
         <div>
-            <img width="600" height="287" src="<?=$config->thumbUrl?>/<?=$featuredVideo->filename?>.jpg" />
+            <img width="640" height="360" src="<?=$config->thumbUrl?>/<?=$featuredVideo->filename?>.jpg" />
             <div class="slide-text">
                 <div>
                     <p class="large"><u><?=Language::getText('featured')?>:</u> <?=$featuredVideo->title?></p>
