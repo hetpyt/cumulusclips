@@ -11,6 +11,9 @@
         <notes></notes>
     </information>
     <terms>
+        <!-- added -->
+        <watch_now>Watch now</watch_now>
+        <!-- end -->
         <search_text>Search Videos...</search_text>
         <login>Login</login>
         <register>Sign Up Free</register>

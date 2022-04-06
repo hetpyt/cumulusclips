@@ -20,7 +20,7 @@ if (!$loggedInUser) $this->addSidebarBlock('home_login.phtml');
                 <div>
                     <p class="large"><u><?=Language::getText('featured')?>:</u> <?=$featuredVideo->title?></p>
                     <p><?=Functions::cutOff($featuredVideo->description, 80)?></p>
-                    <a class="button" href="<?=$this->getService('Video')->getUrl($featuredVideo)?>/">Watch Now</a>
+                    <a class="button" href="<?=$this->getService('Video')->getUrl($featuredVideo)?>/"><?=Language::getText('watch_now')?></a>
                     
                 </div>
             </div>

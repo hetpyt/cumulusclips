@@ -11,6 +11,9 @@
         <notes></notes>
     </information>
     <terms>
+        <!-- added -->
+        <watch_now>Смотреть сейчас</watch_now>
+        <!-- end -->
         <search_text>Найти видео...</search_text>
         <login>Авторизация</login>
         <register>Регистрация</register>
