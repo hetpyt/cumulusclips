@@ -74,7 +74,7 @@ if (isset($_POST['submitted'])) {
         }
 
         // Validate Email
-        if (!empty($_POST['email']) && preg_match('/^[a-z0-9][a-z0-9_\.\-]+@[a-z0-9][a-z0-9\.\-]+\.[a-z0-9]{2,4}$/i', $_POST['email'])) {
+        if (!empty($_POST['email']) && preg_match('/^[a-z0-9][a-z0-9_\.\-]+@[a-z0-9][a-z0-9\.\-]+\.[a-z0-9]{2,5}$/i', $_POST['email'])) {
             $duplicateEmailUser = $userMapper->getUserByCustom(array('email' => $_POST['email']));
             if (!$duplicateEmailUser || $duplicateEmailUser->userId == $user->userId) {
                 $user->email = $_POST['email'];
