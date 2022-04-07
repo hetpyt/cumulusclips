@@ -106,13 +106,6 @@ $this->setLayout('full');
         <div>
             <p class="big"><?=Language::getText('share')?></p>
 
-            <!--
-            Share Widget Notes
-             - Please replace <your_app_id> in the FaceBook share URL with your actual app id obtained from FaceBook's website. This widget will not work until that happens.
-             - FaceBook, and Google + widgets require the video's URL to be publicly accessible, otherwise the widgets will not work.
-            -->
-
-            <!-- FACEBOOK BUTTON -->
             <meta property="og:url" content="<?=$this->getService('Video')->getUrl($video)?>/" />
             <meta property="og:title" content="<?php echo htmlspecialchars($video->title); ?>" />
             <meta property="og:description" content="<?php echo htmlspecialchars($video->description); ?>" />
@@ -122,14 +115,6 @@ $this->setLayout('full');
             <meta property="og:video:type" content="video/mp4">
             <meta property="og:video:width" content="640">
             <meta property="og:video:height" content="360">
-            <script>if (window.location.hash === '#facebook-share') {window.close();}</script>
-            <a class="facebook" href="https://www.facebook.com/dialog/share?app_id=<your_app_id>&display=popup&href=<?=urlencode($this->getService('Video')->getUrl($video) . '/')?>&redirect_uri=<?=urlencode($this->getService('Video')->getUrl($video) . '/#facebook-share')?>" onClick="window.open(this.href, 'sharewindow','width=550,height=300');return false;">Share on Facebook</a>
-
-            <!-- TWITTER BUTTON -->
-            <a class="twitter" href="" onClick="window.open('https://twitter.com/share?url=<?=urlencode($this->getService('Video')->getUrl($video) . '/')?>&text=<?=urlencode(Functions::cutOff(htmlspecialchars($video->description), 140))?>','sharewindow','width=650,height=400');return false;">Share on Twitter</a>
-
-            <!-- Google +BUTTON -->
-            <a class="google" href="https://plus.google.com/share?url=<?=urlencode($this->getService('Video')->getUrl($video) . '/')?>" onClick="javascript:window.open(this.href, 'sharewindow', 'height=600,width=600');return false;">Share</a>
         </div>
 
         <?php if ($video->disableEmbed == '0' && $video->gated == '0'): ?>
