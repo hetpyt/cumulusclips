@@ -284,7 +284,8 @@ if (isset($_POST['submitted_config'])) {
 
         // Validate from email address
         if (!empty($_POST['from_address'])) {
-            $pattern = '/^[a-z0-9][a-z0-9\.\-]+@[a-z0-9][a-z0-9\.\-]+$/i';
+            //$pattern = '/^[a-z0-9][a-z0-9\.\-]+@[a-z0-9][a-z0-9\.\-]+$/i';
+            $pattern = '/^[a-z0-9][a-z0-9_\.\-]+@[a-z0-9][a-z0-9\.\-]+\.[a-z0-9]{2,5}$/i';
             if (preg_match($pattern, $_POST['from_address'])) {
                 $data['from_address'] = trim($_POST['from_address']);
             } else {
