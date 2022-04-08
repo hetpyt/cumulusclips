@@ -46,7 +46,7 @@ if (isset ($_POST['submitted'])) {
         && $_POST['nonce'] == $_SESSION['formNonce']
         && time() - $_SESSION['formTime'] >= 2
     ) {
-        echo(print_r($_POST));
+        //echo(print_r($_POST));
         // Validate video attachments
         if ($config->allowVideoAttachments && isset($_POST['attachment']) && is_array($_POST['attachment'])) {
 
@@ -330,8 +330,8 @@ include('header.php');
             </div>
 
             <div class="form-group">
-                <input id="keep-as-is" class="form-control" type="checkbox" name="keepasis"/>
-                <label for="keep-as-is">Keep as is:</label> <em>Use only if you understand what is mean</em>
+                <label class="control-label">Keep as is:</label>
+                <input id="keep-as-is" class="form-control" type="checkbox" name="keepasis" value="1"/>
             </div>
 
             <div class="form-group <?=(isset($errors['title'])) ? 'has-error' : ''?>">
