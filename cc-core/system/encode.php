@@ -4,7 +4,7 @@
 include_once(dirname(__FILE__) . '/bootstrap.php');
 
 // Validate CLI parameters passed to script
-$arguments = getopt('', array('video:', 'import::'));
+$arguments = getopt('', array('keepasis', 'video:', 'import::'));
 if (!$arguments || !preg_match('/^[0-9]+$/', $arguments['video'])) exit();
 
 // Validate provided import job
@@ -17,6 +17,8 @@ if (!empty($arguments['import'])) {
 } else {
     $importJobId = null;
 }
+// keep video as if (no conversion)
+$keep_as_is = array_key_exists('keepasis', $arguments);
 
 // Establish page variables, objects, arrays, etc
 $video_id = $arguments['video'];
@@ -116,73 +118,77 @@ try {
 
 
 
+    // encode to h264 only if no keep_as_is set
+    if (!$keep_as_is){
+
+
+
+
+        /////////////////////////////////////////////////////////////
+        //                        STEP 3                           //
+        //              Encode raw video to H.264                  //
+        /////////////////////////////////////////////////////////////
+
+        // Debug Log
+        $config->debugConversion ? App::log(CONVERSION_LOG, "\nPreparing for: H.264 Encoding...") : null;
+
+        // Encode raw video to H.264
+        $h264Command = "$ffmpegPath -i $rawVideo " . Settings::get('h264_encoding_options') . " $h264TempFilePath >> $debugLog 2>&1";
+
+        // Debug Log
+        $logMessage = "\n\n\n\n==================================================================\n";
+        $logMessage .= "H.264 ENCODING\n";
+        $logMessage .= "==================================================================\n\n";
+        $logMessage .= "H.264 Encoding Command: $h264Command\n\n";
+        $logMessage .= "H.264 Encoding Output:\n\n";
+        $config->debugConversion ? App::log(CONVERSION_LOG, 'H.264 Encoding Command: ' . $h264Command) : null;
+        App::log($debugLog, $logMessage);
+
+        // Execute H.264 encoding command
+        exec($h264Command);
+
+        // Debug Log
+        $config->debugConversion ? App::log(CONVERSION_LOG, 'Verifying H.264 video was created...') : null;
+
+        // Verify temp H.264 video was created successfully
+        if (!file_exists($h264TempFilePath) || filesize($h264TempFilePath) < 1024*5) {
+            throw new Exception("The temp H.264 file was not created. The id of the video is: $video->videoId");
+        }
 
 
 
 
 
 
-    /////////////////////////////////////////////////////////////
-    //                        STEP 3                           //
-    //              Encode raw video to H.264                  //
-    /////////////////////////////////////////////////////////////
 
-    // Debug Log
-    $config->debugConversion ? App::log(CONVERSION_LOG, "\nPreparing for: H.264 Encoding...") : null;
 
-    // Encode raw video to H.264
-    $h264Command = "$ffmpegPath -i $rawVideo " . Settings::get('h264_encoding_options') . " $h264TempFilePath >> $debugLog 2>&1";
 
-    // Debug Log
-    $logMessage = "\n\n\n\n==================================================================\n";
-    $logMessage .= "H.264 ENCODING\n";
-    $logMessage .= "==================================================================\n\n";
-    $logMessage .= "H.264 Encoding Command: $h264Command\n\n";
-    $logMessage .= "H.264 Encoding Output:\n\n";
-    $config->debugConversion ? App::log(CONVERSION_LOG, 'H.264 Encoding Command: ' . $h264Command) : null;
-    App::log($debugLog, $logMessage);
+        /////////////////////////////////////////////////////////////
+        //                        STEP 4                           //
+        //            Shift Moov atom on H.264 video               //
+        /////////////////////////////////////////////////////////////
 
-    // Execute H.264 encoding command
-    exec($h264Command);
+        // Debug Log
+        $config->debugConversion ? App::log(CONVERSION_LOG, "\nShifting moov atom on H.264 video...") : null;
 
-    // Debug Log
-    $config->debugConversion ? App::log(CONVERSION_LOG, 'Verifying H.264 video was created...') : null;
+        // Prepare shift moov atom command
+        $h264ShiftMoovAtomCommand = "$qtFaststartPath $h264TempFilePath $h264FilePath >> $debugLog 2>&1";
 
-    // Verify temp H.264 video was created successfully
-    if (!file_exists($h264TempFilePath) || filesize($h264TempFilePath) < 1024*5) {
-        throw new Exception("The temp H.264 file was not created. The id of the video is: $video->videoId");
+        // Debug Log
+        $logMessage = "\n\n\n\n==================================================================\n";
+        $logMessage .= "H.264 SHIFT MOOV ATOM\n";
+        $logMessage .= "==================================================================\n\n";
+        $logMessage .= "H.264 Shift Moov Atom Command: $h264ShiftMoovAtomCommand\n\n";
+        $logMessage .= "H.264 Shift Moov Atom Output:\n\n";
+        $config->debugConversion ? App::log(CONVERSION_LOG, 'H.264 Shift Moov Atom Command: ' . $h264ShiftMoovAtomCommand) : null;
+        App::log($debugLog, $logMessage);
+
+        // Execute shift moov atom command
+        exec($h264ShiftMoovAtomCommand);
+    } else {
+        // copy raw file to h264 file
+        copy($rawVideo, $h264FilePath);
     }
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////
-    //                        STEP 4                           //
-    //            Shift Moov atom on H.264 video               //
-    /////////////////////////////////////////////////////////////
-
-    // Debug Log
-    $config->debugConversion ? App::log(CONVERSION_LOG, "\nShifting moov atom on H.264 video...") : null;
-
-    // Prepare shift moov atom command
-    $h264ShiftMoovAtomCommand = "$qtFaststartPath $h264TempFilePath $h264FilePath >> $debugLog 2>&1";
-
-    // Debug Log
-    $logMessage = "\n\n\n\n==================================================================\n";
-    $logMessage .= "H.264 SHIFT MOOV ATOM\n";
-    $logMessage .= "==================================================================\n\n";
-    $logMessage .= "H.264 Shift Moov Atom Command: $h264ShiftMoovAtomCommand\n\n";
-    $logMessage .= "H.264 Shift Moov Atom Output:\n\n";
-    $config->debugConversion ? App::log(CONVERSION_LOG, 'H.264 Shift Moov Atom Command: ' . $h264ShiftMoovAtomCommand) : null;
-    App::log($debugLog, $logMessage);
-
-    // Execute shift moov atom command
-    exec($h264ShiftMoovAtomCommand);
 
     // Debug Log
     $config->debugConversion ? App::log(CONVERSION_LOG, 'Verifying final H.264 file was created...') : null;
@@ -192,7 +198,7 @@ try {
         throw new Exception("The final H.264 file was not created. The id of the video is: $video->videoId");
     }
 
-
+    
 
 
 

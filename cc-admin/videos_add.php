@@ -137,7 +137,8 @@ if (isset ($_POST['submitted'])) {
         if (!empty($_POST['description']) && !ctype_space($_POST['description'])) {
             $video->description = trim($_POST['description']);
         } else {
-            $errors['description'] = 'Invalid description';
+            $video->description = "";
+            //$errors['description'] = 'Invalid description';
         }
 
        // Validate tags
@@ -193,6 +194,11 @@ if (isset ($_POST['submitted'])) {
             $video->commentsClosed = false;
         }
 
+        // keep video as is
+        $keep_as_is = false;
+        if (!empty($_POST['keepasis']) && $_POST['keepasis'] == '1') {
+            $keep_as_is = true;
+        }
         // Verify no errors were found
         if (empty($errors)) {
 
@@ -239,7 +245,7 @@ if (isset ($_POST['submitted'])) {
 
                 // Begin transcoding
                 $commandOutput = $config->debugConversion ? CONVERSION_LOG : '/dev/null';
-                $command = 'nohup ' . Settings::get('php') . ' ' . DOC_ROOT . '/cc-core/system/encode.php --video="' . $videoId . '" >> ' .  $commandOutput . ' 2>&1 &';
+                $command = 'nohup ' . Settings::get('php') . ' ' . DOC_ROOT . '/cc-core/system/encode.php'. ($keep_as_is ? ' --keepasis ' : ' ') .'--video="' . $videoId . '" >> ' .  $commandOutput . ' 2>&1 &';
                 exec($command);
 
                 // Output message
@@ -320,6 +326,11 @@ include('header.php');
                     data-prepopulate="<?php echo urlencode(json_encode($prepopulate)); ?>"
                     data-type="video"
                 />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Keep as is:</label>
+                <input class="form-control" type="checkbox" name="keepasis"/>
             </div>
 
             <div class="form-group <?=(isset($errors['title'])) ? 'has-error' : ''?>">
