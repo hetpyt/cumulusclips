@@ -329,8 +329,8 @@ include('header.php');
             </div>
 
             <div class="form-group">
-                <label class="control-label">Keep as is:</label>
-                <input class="form-control" type="checkbox" name="keepasis"/>
+                <input id="keep-as-is" class="form-control" type="checkbox" name="keepasis"/>
+                <label for="keep-as-is">Keep as is:</label> <em>Use only if you understand what is mean</em>
             </div>
 
             <div class="form-group <?=(isset($errors['title'])) ? 'has-error' : ''?>">
