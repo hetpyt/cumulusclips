@@ -3,7 +3,7 @@
     <div>
         <?php if (isset($this->vars->tags_cloud)): ?>
             <?php foreach ($this->vars->tags_cloud as $tag): ?>
-                <span style="font-size: <?php ($tag->tag_count < 100 ? 100 + $tag->tag_count : 200) ?>%"><a href="#"><?php echo $tag->tag ?></a></span>
+                <span style="font-size: <?php echo (string)($tag->tag_count < 100 ? 100 + $tag->tag_count : 200) ?>%"><a href="#"><?php echo $tag->tag ?></a></span>
             <?php endforeach;?>
         <?php endif; ?>
     </div>
