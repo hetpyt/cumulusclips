@@ -71,7 +71,7 @@ class TagMapper extends MapperAbstract
             $query .= ' video_id = :videoId, tag = :tag, tag_lc = :tagLower';
             $query .= ' WHERE tag_id = :tagId';
             $bindParams = array(
-                ':tagId' => $tag->commentId,
+                ':tagId' => $tag->tagId,
                 ':videoId' => $tag->videoId,
                 ':tag' => $tag->tag,
                 ':tagLower' => $tag->tagLower,
@@ -111,7 +111,7 @@ class TagMapper extends MapperAbstract
             $values = '';
             $bindParams = array();
             foreach ($tagList as $tagObj) {
-                $values .= (empty($value) ? '' : ', ') . '(?, ?, ?)';
+                $values .= (empty($values) ? '' : ', ') . '(?, ?, ?)';
                 $bindParams[] = $tagObj->videoId;
                 $bindParams[] = $tagObj->tag;
                 $bindParams[] = $tagObj->tagLower;
