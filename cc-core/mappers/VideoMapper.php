@@ -195,6 +195,7 @@ class VideoMapper extends MapperAbstract
             $tagObj->videoId = $videoId;
             $tagObj->tag = $tag;
             $tagObj->tagLower = mb_strtolower($tag);
+            $tagList[] = $tagObj;
         }
         $tagMapper->insertTagsList($tagList);
 
