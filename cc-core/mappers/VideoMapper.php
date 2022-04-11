@@ -122,7 +122,7 @@ class VideoMapper extends MapperAbstract
     public function save(Video $video)
     {
         // process tags on video created/updated
-        $tagMapper = new TagMapper;
+        $tagMapper = new TagMapper();
         $newVideo = false;
 
         $db = Registry::get('db');
@@ -191,7 +191,7 @@ class VideoMapper extends MapperAbstract
         }
         $tagList = array();
         foreach ($video->tags as $tag) {
-            $tagObj = new Tag;
+            $tagObj = new Tag();
             $tagObj->videoId = $videoId;
             $tagObj->tag = $tag;
             $tagObj->tagLower = mb_strtolower($tag);

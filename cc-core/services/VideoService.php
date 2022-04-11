@@ -24,6 +24,10 @@ class VideoService extends ServiceAbstract
      */
     public function delete(Video $video)
     {
+        // delete tags
+        $tagService = new TagService();
+        $tagService->deleteVideoTags($video);
+        
         // Delete comments on video
         $commentService = new CommentService();
         $commentMapper = new CommentMapper();
