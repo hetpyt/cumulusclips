@@ -2,7 +2,7 @@
     <div>
         <?php if (isset($this->vars->tags_cloud)): ?>
             <?php foreach ($this->vars->tags_cloud as $tag): ?>
-                <span><?php $tag->tag ?></span>
+                <span><?php echo $tag->tag ?></span>
             <?php endforeach;?>
         <?php endif; ?>
     </div>
