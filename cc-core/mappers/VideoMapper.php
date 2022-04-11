@@ -121,6 +121,10 @@ class VideoMapper extends MapperAbstract
 
     public function save(Video $video)
     {
+        // process tags on video created/updated
+        $tagMapper = new TagMapper;
+        $newVideo = false;
+
         $db = Registry::get('db');
         if (!empty($video->videoId)) {
             // Update
@@ -150,6 +154,7 @@ class VideoMapper extends MapperAbstract
                 ':commentsClosed' => (isset($video->commentsClosed) && $video->commentsClosed === true) ? 1 : 0
             );
         } else {
+            $newVideo = true;
             // Create
             $query = 'INSERT INTO ' . DB_PREFIX . 'videos';
             $query .= ' (filename, title, description, tags, category_id, user_id, date_created, job_id, duration, status, views, original_extension, featured, gated, released, disable_embed, private, private_url, comments_closed)';
@@ -179,6 +184,21 @@ class VideoMapper extends MapperAbstract
 
         $db->query($query, $bindParams);
         $videoId = (!empty($video->videoId)) ? $video->videoId : $db->lastInsertId();
+        // tags
+        if (!$newVideo) {
+            // need remove current tags of this video
+            $tagMapper->deleteVideoTags($videoId);
+        }
+        $tagList = array();
+        foreach ($video->tags as $tag) {
+            $tagObj = new Tag;
+            $tagObj->videoId = $videoId;
+            $tagObj->tag = $tag;
+            $tagObj->tagLower = mb_strtolower($tag);
+        }
+        $tagMapper->insertTagsList($tagList);
+
+
         return $videoId;
     }
 
