@@ -16,4 +16,9 @@ class TagsCloud
      * @var int
      */
     public $tagCount;
+
+    /**
+     * @var bool
+     */
+    public $frequent = false;
 }

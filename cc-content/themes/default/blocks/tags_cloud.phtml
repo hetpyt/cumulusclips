@@ -1,9 +1,9 @@
 <div class="tags-cloud" >
     <h1><?=Language::getText('tags_cloud')?></h1>
-    <div>
+    <div class="tags-cloud-content">
         <?php if (isset($this->vars->tags_cloud)): ?>
             <?php foreach ($this->vars->tags_cloud as $tag): ?>
-                <span class="tags-cloud-item" style="font-size: <?php echo (string)($tag->tagCount < 100 ? 100 + $tag->tagCount : 200) ?>%"><a href="#"><?php echo $tag->tag ?></a></span>
+                <span class="tags-cloud-item<?php echo ($tag->frequent ? ' frequent' : '') ?>" ><a href="#"><?php echo $tag->tag ?></a></span>
             <?php endforeach;?>
         <?php endif; ?>
     </div>

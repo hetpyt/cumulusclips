@@ -775,7 +775,16 @@ a.button {
     display: inline;
 }
 
+.tags-cloud-content {
+    line-height: 150%;
+}
+
 .tags-cloud-item {
     margin-inline: 6px;
+    white-space: nowrap;
+}
+
+.tags-cloud-item .frequent{
+    font-size: 150%;
 }
 
