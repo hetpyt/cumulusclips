@@ -13,6 +13,7 @@
     <terms>
         <!-- added -->
         <watch_now>Watch now</watch_now>
+        <tags_cloud>Tags</tags_cloud>
         <!-- end -->
         <search_text>Search Videos...</search_text>
         <login>Login</login>

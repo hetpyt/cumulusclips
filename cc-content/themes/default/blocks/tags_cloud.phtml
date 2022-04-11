@@ -1,8 +1,9 @@
 <div class="tags-cloud" >
+    <h1><?=Language::getText('tags_cloud')?></h1>
     <div>
         <?php if (isset($this->vars->tags_cloud)): ?>
             <?php foreach ($this->vars->tags_cloud as $tag): ?>
-                <span><?php echo $tag->tag ?></span>
+                <span style="font-size: <?php ($tag->tag_count < 100 ? 100 + $tag->tag_count : 200) ?>%"><a href="#"><?php echo $tag->tag ?></a></span>
             <?php endforeach;?>
         <?php endif; ?>
     </div>

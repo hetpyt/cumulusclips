@@ -13,6 +13,7 @@
     <terms>
         <!-- added -->
         <watch_now>Смотреть сейчас</watch_now>
+        <tags_cloud>Теги</tags_cloud>
         <!-- end -->
         <search_text>Найти видео...</search_text>
         <login>Авторизация</login>
