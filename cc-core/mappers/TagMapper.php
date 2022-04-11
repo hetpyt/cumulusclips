@@ -12,18 +12,6 @@ class TagMapper extends MapperAbstract
         return $this->getMultipleTagsByCustom(array('video_id' => $videoId));
     }
 
-    public function getTagsWithCount() {
-        $db = Registry::get('db');
-        $query = 'SELECT tag, tag_lc, count(tag_id) as tag_count FROM ' . DB_PREFIX . 'tags  GROUP BY tag, tag_lc ORDER BY tag';
-        $dbResults = $db->fetchAll($query);
-
-        $tagsList = array();
-        foreach($dbResults as $record) {
-            $tagsList[] = $this->_map($record);
-        }
-        return $tagsList;
-    }
-
     public function getTagByCustom(array $params)
     {
         $db = Registry::get('db');

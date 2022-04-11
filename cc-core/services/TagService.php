@@ -6,9 +6,9 @@ class TagService extends ServiceAbstract
      * Retrieve set of tags with count of ucurrences
      * @return array of Tag
      */
-    public function getTagsWithCount() {
-        $tagMapper = $this->_getMapper();
-        return $tagMapper->getTagsWithCount();
+    public function getTagsCloud() {
+        $tagsCloudMapper = new TagsCloudMapper();
+        return $tagsCloudMapper->getTagsCloudList();
     }
 
     /**

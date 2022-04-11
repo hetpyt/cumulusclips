@@ -25,7 +25,7 @@ $this->view->vars->recent_videos = $videoMapper->getVideosFromList(
 
 // retrieve tags cloud
 $tagMapper = new TagService();
-$this->view->vars->tags_cloud = $tagMapper->getTagsWithCount();
+$this->view->vars->tags_cloud = $tagMapper->getTagsCloud();
 
 // Show message if user logged out
 if (isset($_SESSION['logout'])) {
