@@ -15,5 +15,5 @@ class TagsCloud
     /**
      * @var int
      */
-    public $tag_count;
+    public $tagCount;
 }
