@@ -3,6 +3,15 @@
 class TagService extends ServiceAbstract
 {
     /**
+     * Retrieve set of tags with count of ucurrences
+     * @return array of Tag
+     */
+    public function getTagsWithCount() {
+        $tagMapper = $this->_getMapper();
+        return $tagMapper->getTagsWithCount();
+    }
+
+    /**
      * Delete a tag
      * @param Tag $tag Instance of tag to be deleted
      * @return void Tag is deleted from system

@@ -1,0 +1,9 @@
+<div class="tags-cloud" >
+    <div>
+        <?php if (isset($this->vars->tags_cloud)): ?>
+            <?php foreach ($this->vars->tags_cloud as $tag): ?>
+                <span><?php $tag->tag ?></span>
+            <?php endforeach;?>
+        <?php endif; ?>
+    </div>
+</div>
