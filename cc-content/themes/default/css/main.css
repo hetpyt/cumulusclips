@@ -784,7 +784,7 @@ a.button {
     white-space: nowrap;
 }
 
-.tags-cloud-item .frequent{
+.tags-cloud-item.frequent{
     font-size: 150%;
 }
 
