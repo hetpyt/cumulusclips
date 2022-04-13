@@ -34,7 +34,7 @@ class TagsCloudMapper extends MapperAbstract
     protected function _map($dbResults)
     {
         $tagCloud = new TagsCloud();
-        $tagCloud->tag_id = $dbResults['tag_id'];
+        $tagCloud->tagId = $dbResults['tag_id'];
         $tagCloud->tag = $dbResults['tag'];
         $tagCloud->tagLower = $dbResults['tag_lc'];
         $tagCloud->tagCount = (int) $dbResults['tag_count'];

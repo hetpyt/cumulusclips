@@ -5,7 +5,7 @@ class TagsCloud
         /**
      * @var string
      */
-    public $tag_id;
+    public $tagId;
     
     /**
      * @var string
