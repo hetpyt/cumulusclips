@@ -2,6 +2,11 @@
 
 class TagsCloud
 {
+        /**
+     * @var string
+     */
+    public $tag_id;
+    
     /**
      * @var string
      */

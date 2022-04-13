@@ -5,12 +5,12 @@ class Tag
     /**
      * @var int 
      */
-    public $tagtId;
+    public $tagId;
     
     /**
-     * @var int
+     * @var array<int>
      */
-    public $videoId;
+    public $videoIds;
     
     /**
      * @var string

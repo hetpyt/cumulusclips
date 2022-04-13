@@ -187,17 +187,14 @@ class VideoMapper extends MapperAbstract
         // tags
         if (!$newVideo) {
             // need remove current tags of this video
-            $tagMapper->deleteVideoTags($videoId);
+            $tagMapper->UnlinkTagsFromVideoId($videoId);
         }
         $tagList = array();
         foreach ($video->tags as $tag) {
-            $tagObj = new Tag();
-            $tagObj->videoId = $videoId;
-            $tagObj->tag = $tag;
-            $tagObj->tagLower = mb_strtolower($tag);
+            $tagObj = $tagMapper->newTag($tag);
             $tagList[] = $tagObj;
         }
-        $tagMapper->insertTagsList($tagList);
+        $tagMapper->linkTagsListToVideoId($tagList, $videoId);
 
 
         return $videoId;
@@ -245,5 +242,14 @@ class VideoMapper extends MapperAbstract
         $query = "SELECT COUNT(video_id) AS count FROM " . DB_PREFIX . "videos WHERE user_id = $userId AND status = 'approved' AND private = 0";
         $result = $db->fetchRow($query);
         return $result['count'];
+    }
+
+    /**
+     * Retrieve videos by tag lowercase.
+     *
+     * @param string $tagLower lowercase tag text
+     */
+    public function getVideosByTagLower($tagLower) {
+        
     }
 }

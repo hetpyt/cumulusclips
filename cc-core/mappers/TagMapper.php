@@ -7,11 +7,6 @@ class TagMapper extends MapperAbstract
         return $this->getTagByCustom(array('tag_id' => $tagId));
     }
 
-    public function getVideoTagsById($videoId)
-    {
-        return $this->getMultipleTagsByCustom(array('video_id' => $videoId));
-    }
-
     public function getTagByCustom(array $params)
     {
         $db = Registry::get('db');
@@ -32,31 +27,24 @@ class TagMapper extends MapperAbstract
         }
     }
 
-    public function getMultipleTagsByCustom(array $params)
+    /**
+     * create new Tag object 
+     * @param string  $tag tag text
+     * @return Tag object
+     */
+    public function newTag($tag)
     {
-        $db = Registry::get('db');
-        $query = 'SELECT * FROM ' . DB_PREFIX . 'tags  WHERE ';
-
-        $queryParams = array();
-        foreach ($params as $fieldName => $value) {
-            $query .= "$fieldName = :$fieldName AND ";
-            $queryParams[":$fieldName"] = $value;
-        }
-        $query = preg_replace('/\sAND\s$/', '', $query);
-        $dbResults = $db->fetchAll($query, $queryParams);
-
-        $tagsList = array();
-        foreach($dbResults as $record) {
-            $tagsList[] = $this->_map($record);
-        }
-        return $tagsList;
+        $tagObj = new Tag();
+        $tagObj->tag = $tag;
+        $tagObj->tagLower = mb_strtolower($tag);
+        return $tagObj;
     }
 
     protected function _map($dbResults)
     {
         $tag = new Tag();
         $tag->tagId = (int) $dbResults['tag_id'];
-        $tag->videoId = (int) $dbResults['video_id'];
+        //$tag->videoId = (int) $dbResults['video_id'];
         $tag->tag = $dbResults['tag'];
         $tag->tagLower = $dbResults['tag_lc'];
         return $tag;
@@ -68,21 +56,19 @@ class TagMapper extends MapperAbstract
         if (!empty($tag->tagId)) {
             // Update
             $query = 'UPDATE ' . DB_PREFIX . 'tags SET';
-            $query .= ' video_id = :videoId, tag = :tag, tag_lc = :tagLower';
+            $query .= ' tag = :tag, tag_lc = :tagLower';
             $query .= ' WHERE tag_id = :tagId';
             $bindParams = array(
                 ':tagId' => $tag->tagId,
-                ':videoId' => $tag->videoId,
                 ':tag' => $tag->tag,
                 ':tagLower' => $tag->tagLower,
             );
         } else {
             // Create
             $query = 'INSERT INTO ' . DB_PREFIX . 'tags';
-            $query .= ' (video_id, tag, tag_lc)';
-            $query .= ' VALUES (:videoId, :tag, :tagLower)';
+            $query .= ' (tag, tag_lc)';
+            $query .= ' VALUES (:tag, :tagLower)';
             $bindParams = array(
-                ':videoId' => $tag->videoId,
                 ':tag' => $tag->tag,
                 ':tagLower' => $tag->tagLower,
             );
@@ -94,30 +80,42 @@ class TagMapper extends MapperAbstract
     }
 
     /**
-     * insert list of Tag objects to db
-     * @param array $tagList array of Tag objects
-     * @return null
+     * link tag to video
+     * @param int $tagId id of tag in db
+     * @param int $videoId id of video to link tag to
+     * @return int id of link row in db
      */
-    public function insertTagsList($tagList) {
-        if (count($tagList) == 0) {
-            return;
-        }
-        elseif (count($tagList) == 1) {
-            $this->save($tagList[0]);
-        } else {
-            $db = Registry::get('db');
-            $query = 'INSERT INTO ' . DB_PREFIX . 'tags';
-            $query .= ' (video_id, tag, tag_lc) VALUES ';
-            $values = '';
-            $bindParams = array();
-            foreach ($tagList as $tagObj) {
-                $values .= (empty($values) ? '' : ', ') . '(?, ?, ?)';
-                $bindParams[] = $tagObj->videoId;
-                $bindParams[] = $tagObj->tag;
-                $bindParams[] = $tagObj->tagLower;
+    public function linkTagIdToVideoId($tagId, $videoId)
+    {
+        $db = Registry::get('db');
+        $query = 'INSERT INTO ' . DB_PREFIX . 'tags_videos';
+        $query .= ' (tag_id, video_id)';
+        $query .= ' VALUES (:tagId, :videoId)';
+        $bindParams = array(
+            ':tagId' => $tagId,
+            ':videoId' => $videoId,
+        );
+        $db->query($query, $bindParams);
+        return $db->lastInsertId();
+}
+
+    /**
+     * link list of Tag objects to video
+     * @param array<Tag> $tagList array of Tag objects
+     * @param int $videoId id of video to link to
+     * @return void
+     */
+    public function linkTagsListToVideoId($tagList, $videoId) 
+    {
+        foreach ($tagList as $tagObj) {
+            $tagDb = $this->getTagByCustom(array('tag_lc' => $tagObj->tagLower));
+            if ($tagDb) {
+                $tagId = $tagDb->tagId;
+            } else {
+                // no tag - create
+                $tagId = $this->save($tagObj);
             }
-            $query .= $values;
-            $db->query($query, $bindParams);
+            $this->linkTagIdToVideoId($tagId, $videoId);
         }
     }
 
@@ -143,17 +141,15 @@ class TagMapper extends MapperAbstract
         $db->query('DELETE FROM ' . DB_PREFIX . 'tags WHERE tag_id = :tagId', array(':tagId' => $tagId));
     }
 
-    public function deleteVideoTags($videoId) {
-        $db = Registry::get('db');
-        $db->query('DELETE FROM ' . DB_PREFIX . 'tags WHERE video_id = :videoId', array(':videoId' => $videoId));
-    }
-
-    public function getVideoTagCount($videoId)
+    /**
+     * unlink all linked tags from video
+     * @param int $videoId id of video to unlink from
+     * @return void
+     */
+    public function unlinkTagsFromVideoId($videoId)
     {
         $db = Registry::get('db');
-        $sql = 'SELECT COUNT(tag_id) AS count FROM ' . DB_PREFIX . 'tags WHERE video_id = ? AND status = "approved"';
-        $result = $db->fetchRow($sql, array($videoId));
-        return $result['count'];
+        $db->query('DELETE FROM ' . DB_PREFIX . 'tags_videos WHERE video_id = :videoId', array(':videoId' => $videoId));
     }
 
 }
