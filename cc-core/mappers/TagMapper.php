@@ -38,7 +38,7 @@ class TagMapper extends MapperAbstract
         //$query = 'SELECT * FROM ' . DB_PREFIX . 'tags_videos WHERE tag_id = :tagId';
         $query = "SELECT ".DB_PREFIX."tags_videos.video_id  
         FROM ".DB_PREFIX."tags_videos JOIN ".DB_PREFIX."videos ON ".DB_PREFIX."tags_videos.video_id=".DB_PREFIX."videos.video_id 
-        WHERE ".DB_PREFIX."videos.status='approved' AND ".DB_PREFIX."videos.private='0'";
+        WHERE ".DB_PREFIX."tags_videos.tag_id=:tagId AND ".DB_PREFIX."videos.status='approved' AND ".DB_PREFIX."videos.private='0'";
         if (isset($start) && isset($count)) {
             $query .= " LIMIT $start, $count";
         }
