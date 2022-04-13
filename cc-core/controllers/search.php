@@ -11,7 +11,7 @@ $keyword = null;
 $this->view->vars->cleaned = null;
 $url = HOST . '/search';
 $query_string = array();
-$records_per_page = 3; //9;
+$records_per_page = 9;
 $db = Registry::get('db');
 
 // Verify a keyword was given
