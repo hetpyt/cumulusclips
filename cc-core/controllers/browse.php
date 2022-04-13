@@ -16,6 +16,10 @@ $this->view->vars->category_list = array();
 $records_per_page = 9;
 $url = HOST . '/browse';
 
+// retrieve tags cloud
+$tagMapper = new TagService();
+$this->view->vars->tags_cloud = $tagMapper->getTagsCloud();
+
 // Retrieve Categories
 $categoryService = new CategoryService();
 $this->view->vars->category_list = $categoryService->getCategories();
