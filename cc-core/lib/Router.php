@@ -84,9 +84,7 @@ class Router
         // Merge user defined GET variables with original GET vars
         if (isset($matchedRoute->route->mappings)) {
             $additionalGetVars = $this->_mapPatternMatches($matchedRoute->route, $matchedRoute->matches);
-            echo(print_r($_GET));
             $_GET = array_merge($_GET, $additionalGetVars);
-            echo(print_r($_GET));
         }
 
         return $matchedRoute->route;
