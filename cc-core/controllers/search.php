@@ -42,7 +42,7 @@ if ($tag_search) {
 
         $tagService = new TagService();
         $count = $tagService->getCountVideosByTagId($this->view->vars->tagId);
-        echo($count);
+
         // Initialize pagination
         $url .= (!empty ($query_string)) ? '?' . http_build_query($query_string) : '';
         $this->view->vars->pagination = new Pagination ($url, $count, $records_per_page);
