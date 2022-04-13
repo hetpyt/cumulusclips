@@ -14,6 +14,7 @@
         <!-- added -->
         <watch_now>Watch now</watch_now>
         <tags_cloud>Tags</tags_cloud>
+        <invalid_tag>Undefined tag</invalid_tag>
         <!-- end -->
         <search_text>Search Videos...</search_text>
         <login>Login</login>

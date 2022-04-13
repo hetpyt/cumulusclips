@@ -28,6 +28,30 @@ class TagMapper extends MapperAbstract
     }
 
     /**
+     * retrieve videoIds list from db by tagId 
+     * @param int  $tagId
+     * @return array<int> array of videoIds
+     */
+    public function getVideoIdsByTagId($tagId, $start=null, $count=null) 
+    {
+        $db = Registry::get('db');
+        //$query = 'SELECT * FROM ' . DB_PREFIX . 'tags_videos WHERE tag_id = :tagId';
+        $query = "SELECT ".DB_PREFIX."tags_videos.video_id  
+        FROM ".DB_PREFIX."tags_videos JOIN ".DB_PREFIX."videos ON ".DB_PREFIX."tags_videos.video_id=".DB_PREFIX."videos.video_id 
+        WHERE ".DB_PREFIX."videos.status='approved' AND ".DB_PREFIX."videos.private='0'";
+        if (isset($start) && isset($count)) {
+            $query .= " LIMIT $start, $count";
+        }
+        $queryParams = array(':tagId' => $tagId);
+        $dbResults = $db->fetchAll($query, $queryParams);
+        if ($dbResults)
+            $videoIds = Functions::arrayColumn($dbResults, 'video_id');
+        else
+            $videoIds = array();
+        return $videoIds;
+    }
+
+    /**
      * create new Tag object 
      * @param string  $tag tag text
      * @return Tag object
@@ -97,7 +121,7 @@ class TagMapper extends MapperAbstract
         );
         $db->query($query, $bindParams);
         return $db->lastInsertId();
-}
+    }
 
     /**
      * link list of Tag objects to video

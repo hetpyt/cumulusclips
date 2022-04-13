@@ -243,13 +243,4 @@ class VideoMapper extends MapperAbstract
         $result = $db->fetchRow($query);
         return $result['count'];
     }
-
-    /**
-     * Retrieve videos by tag lowercase.
-     *
-     * @param string $tagLower lowercase tag text
-     */
-    public function getVideosByTagLower($tagLower) {
-        
-    }
 }

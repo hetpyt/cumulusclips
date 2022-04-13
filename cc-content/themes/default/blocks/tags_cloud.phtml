@@ -3,7 +3,7 @@
     <div class="tags-cloud-content">
         <?php if (isset($this->vars->tags_cloud)): ?>
             <?php foreach ($this->vars->tags_cloud as $tag): ?>
-                <span class="tags-cloud-item<?php echo ($tag->frequent ? ' frequent' : '') ?>" ><a href="#"><?php echo $tag->tag ?></a></span>
+                <span class="tags-cloud-item<?=($tag->frequent ? ' frequent' : '')?>" ><a href="<?=HOST?>/search?tag=<?=$tag->tagId?>"><?=$tag->tag ?></a></span>
             <?php endforeach;?>
         <?php endif; ?>
     </div>
