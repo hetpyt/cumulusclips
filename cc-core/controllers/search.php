@@ -34,6 +34,7 @@ if (isset ($_POST['submitted_search'])) {
     }
 }
 
+echo (print_r($GET));
 
 if ($tag_search) {
     // tag search
