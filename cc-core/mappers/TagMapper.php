@@ -28,6 +28,26 @@ class TagMapper extends MapperAbstract
     }
 
     /**
+     * retrieve tags linked to veideoId 
+     * @param int  $videoId
+     * @return array<Tag> array of tags
+     */
+    public function getTagsByVideoId($videoId)
+    {
+        $db = Registry::get('db');
+        $query = 'SELECT * FROM ' . DB_PREFIX . 'tags_videos WHERE video_id = :videoId';
+        $queryParams = array(':videoId' => $videoId);
+        $dbResults = $db->fetchAll($query, $queryParams);
+        $tagsList = array();
+        if ($dbResults) {
+            foreach($dbResults as $record) {
+                $tagsList[] = $this->_map($record);
+            }
+        }
+        return $tagsList;
+    }
+
+    /**
      * retrieve videoIds list from db by tagId 
      * @param int  $tagId
      * @return array<int> array of videoIds
@@ -141,6 +161,20 @@ class TagMapper extends MapperAbstract
             }
             $this->linkTagIdToVideoId($tagId, $videoId);
         }
+    }
+
+    /**
+     * count links of tag to videos
+     * @param int tagId object
+     * @return int links count
+     */
+    public function getTagLinksCount($tagId)
+    {
+        $db = Registry::get('db');
+        $query = 'SELECT count(id) AS count FROM ' . DB_PREFIX . 'tags_videos WHERE tag_id = :tagId';
+        $queryParams = array(':tagId' => $tagId);
+        $result = $db->fetchRow($query, $queryParams);
+        return $result['count'];
     }
 
     public function getTagsFromList(array $tagIds)

@@ -14,10 +14,17 @@ class TagService extends ServiceAbstract
 
     public function deleteVideoTags(Video $video)
     {
-        // select all tags of video
-
         $tagMapper = $this->_getMapper();
+        // select all tags of video
+        $videoTags = $tagMapper->getTagsByVideoId($video->videoId);
         $tagMapper->unlinkTagsFromVideoId($video->videoId);
+        // check unused tags, and delete
+        foreach($videoTags as $tagObj) {
+            $linksCount = $tagMapper->getTagLinksCount($tagObj->tagId);
+            if ($linksCount == 0) {
+                $tagMapper->delete($tagObj->tagId);
+            }
+        }
     }
     
     /**
